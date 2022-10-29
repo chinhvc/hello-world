@@ -34,6 +34,13 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo "This is pipeline ID in CircleCI << pipeline.id >>"
+  print_your_name:
+    docker:
+      - image: circleci/node:13.8.0
+    environment:
+      USER_NAME: "Jack Vo"
+    steps:
+      - run: echo "This is pipeline ID in CircleCI << pipeline.id >>"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -46,3 +53,6 @@ workflows:
       - print_pipeline_id:
           requires:
             - print_world
+      - print_your_name:
+          requires:
+            - print_pipeline_id
