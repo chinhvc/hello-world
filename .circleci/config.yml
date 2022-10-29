@@ -23,7 +23,6 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - checkout
       - run:
         name: "Print Hello"
         command: "echo hello"
@@ -31,9 +30,8 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - checkout
       - run:
-        name: "Print Worl"
+        name: "Print World"
         command: "echo world"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
