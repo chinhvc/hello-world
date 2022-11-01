@@ -47,8 +47,8 @@ jobs:
     steps:
       - run: echo "Hello world" > output.txt
       - persist_to_workspace:
-          root: ~/workspace
-          paths: output.txt
+          root: .
+          paths: .
   print_output_file:
     docker:
       - image: circleci/node:13.8.0
