@@ -61,14 +61,14 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run:
-          name: Testing application
-          command: make test
-          shell: /bin/bash
-          working_directory: ~/my-app
-          no_output_timeout: 30m
-          environment:
-            FOO: bar
+      # - run:
+      #     name: Testing application
+      #     command: make test
+      #     shell: /bin/bash
+      #     working_directory: ~/my-app
+      #     no_output_timeout: 30m
+      #     environment:
+      #       FOO: bar
 
       - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
 
