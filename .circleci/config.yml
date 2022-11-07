@@ -41,31 +41,54 @@ jobs:
   #     USER_NAME: "Jack Vo"
   #   steps:
   #     - run: echo $USER_NAME
-  save_hello_world_output:
+  # save_hello_world_output:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - run: echo "Hello world" > ~/output.txt
+  #     - persist_to_workspace:
+  #         root: ~/
+  #         paths:
+  #           - output.txt
+  # print_output_file:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:      
+  #     - attach_workspace:
+  #         at: ~/
+  #     - run: cat ~/output.txt
+  test_on_failed:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "Hello world" > ~/output.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - output.txt
-  print_output_file:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:      
-      - attach_workspace:
-          at: ~/
-      - run: cat ~/output.txt
+      - run:
+          name: Testing application
+          command: make test
+          shell: /bin/bash
+          working_directory: ~/my-app
+          no_output_timeout: 30m
+          environment:
+            FOO: bar
+
+      - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
+
+      - run: |
+          sudo -u root createuser -h localhost --superuser ubuntu &&
+          sudo createdb -h localhost test_db
+
+      - run:
+          name: Upload Failed Tests
+          command: curl --data fail_tests.log http://example.com/error_logs
+          when: on_fail
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  hello-world-workflow:
-    jobs:
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
+  # hello-world-workflow:
+  #   jobs:
+  #     - save_hello_world_output
+  #     - print_output_file:
+  #         requires:
+  #           - save_hello_world_output
   # hello-world-workflow:
   #   jobs:
   #     - print_hello
@@ -78,3 +101,6 @@ workflows:
   #     - print_your_name:
   #         requires:
   #           - print_pipeline_id
+  test-on-failed-workflow:
+    jobs:
+      - test_on_failed
