@@ -72,9 +72,9 @@ jobs:
 
       - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts & cat /etc/hosts
 
-      # - run: |
-      #     sudo -u root createuser -h localhost --superuser ubuntu &&
-      #     sudo createdb -h localhost test_db
+      - run: |
+          sudo -u root createuser -h localhost --superuser ubuntu &&
+          sudo createdb -h localhost test_db
 
       - run:
           name: Upload Failed Tests
