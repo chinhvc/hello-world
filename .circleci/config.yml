@@ -70,7 +70,7 @@ jobs:
       #     environment:
       #       FOO: bar
 
-      - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
+      - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts & cat /etc/hosts
 
       # - run: |
       #     sudo -u root createuser -h localhost --superuser ubuntu &&
